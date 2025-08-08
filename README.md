@@ -9,7 +9,7 @@ This project uses the **DTT Houses API**.
 - View all houses
 - Search by address, city or postal code
 - Sort by price or size
-- Create new house listings (with image upload)
+- Create new house listings
 - Edit existing listings
 - Delete listings
 - View About
