@@ -1,0 +1,184 @@
+/* Import */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;0,600;0,700;1,500&family=Open+Sans:wght@400;600&display=swap');
+
+/* variables */
+:root {
+    /* colors */
+    --color-primary: #EB5440;
+    --color-secondary: #4A4B4C;
+    --color-tertiary-light: #E8E8E8;
+    --color-tertiary-dark: #C3C3C3;
+    --color-background-1: #F6F6F6;
+    --color-background-2: #FFFFFF;
+
+    /* Font colors */
+    --color-text-primary: #000000;
+    --color-text-secondary: #4E4F50;
+    --color-text-link: #067BC2;
+
+    /* Font families */
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Open Sans', sans-serif;
+
+    /* Font weights */
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+
+
+    /* Font sizes desktop */
+    --fs-h1-desktop: 32px;
+    --fs-h2-desktop: 22px;
+    --fs-button-desktop: 18px;
+    --fs-back-button-desktop: 16px;
+    --fs-input-label-desktop: 14px;
+    --fs-error-desktop: 14px;
+    --fs-body-desktop: 18px;
+    --fs-input-desktop: 14px;
+
+    /* Font sizes mobile */
+    --fs-h1-mobile: 18px;
+    --fs-h2-mobile: 14px;
+    --fs-button-mobile: 12px;
+    --fs-input-label-mobile: 12px;
+    --fs-error-mobile: 12px;
+    --fs-body-mobile: 12px;
+    --fs-input-mobile: 12px;
+
+    /* Border radius */
+    --border-radius-regular: 8px;
+
+    /* Max widht */
+    --width-max: 1200px;
+}
+
+/* main css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body,
+htm, 
+textarea,
+input[type="search"] {
+    font-family: var(--font-body);
+    background-color: var(--color-background-1);
+    color: var(--color-text-primary); 
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-heading);
+}
+h1 {
+    font-size: var(--fs-h1-mobile);
+    font-weight: var(--weight-bold);
+}
+h2 {
+    font-size: var(--fs-h2-mobile);
+    font-weight: var(--weight-bold);
+}
+p,a {
+    font-size: var(--fs-body-mobile);
+    font-weight: var(--weight-regular); 
+    color: var(--color-text-secondary);
+}
+a {
+    text-decoration: none;
+    color: var(--color-text-link) !important;
+    cursor: pointer;
+}
+
+.container {
+    width: 100%;
+    max-width: var(--width-max);
+    margin: 0 auto;
+    padding: 0 22px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+button{
+    border: none;
+    background-color: transparent;
+    font-size: var(--fs-button-mobile);
+    font-weight: var(--weight-bold);
+    cursor: pointer;
+}
+
+form label {
+    color: var(--color-text-secondary);
+    font-size: var(--fs-input-label-mobile);
+    font-weight:var(--weight-semibold) ;
+}
+
+form input, form select, form textarea {
+    border: none;
+    padding: 14px;
+    border-radius: var(--border-radius-regular);
+}
+
+form select option {
+    color: black;
+}
+
+form input::placeholder, form textarea::placeholder {
+    color: var(--color-tertiary-dark);
+    font-size: var(--fs-input-mobile)
+}
+input[type="search"], form input, form select, form textarea {
+    color: var(--color-text-secondary); 
+    font-size: var(--fs-input-mobile)
+    
+}
+
+.desktop-only {
+  display: none;
+}
+.mobile-only {
+    display: block;
+}
+
+@media (min-width: 1024px) {
+    h1 {
+        font-size: var(--fs-h1-desktop);
+    }
+    h2 {
+        font-size: var(--fs-h2-desktop);
+    }
+    h3, p, span{
+        font-size: var(--fs-body-desktop);
+    }
+    button, input[type="search"] {
+        font-size: var(--fs-button-desktop);
+    }
+    form label {
+        font-size: var(--fs-input-label-desktop);
+    }
+    form input, form select, form textarea {
+        padding: 20px 25px;
+        font-size: var(--fs-input-desktop);
+    }
+    form input::placeholder, form textarea::placeholder {
+    font-size: var(--fs-input-label-desktop);
+    }
+    .desktop-only {
+    display: block;
+    }
+    .mobile-only {
+    display: none !important;
+    }
+    .container {
+    gap: 20px;
+    padding: 0;
+    }
+    .center {
+    display: flex;
+    justify-content: center; 
+}
+}
