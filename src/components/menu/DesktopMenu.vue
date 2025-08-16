@@ -55,6 +55,8 @@ const isActive = (path) => {
     box-shadow: rgba(99, 99, 99, 0.094) 0px 2px 8px 0px;
     width: 100%;
     padding: 18px 0;
+    position: sticky;
+    top: 0;
 }
 
 .menu-content {
