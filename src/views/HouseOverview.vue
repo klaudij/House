@@ -160,7 +160,7 @@ function confirmDelete(id) {
 .empty-state {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   align-items: center;
   width: 100%;
   justify-content: center;

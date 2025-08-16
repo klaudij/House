@@ -52,11 +52,13 @@ import MobileHeader from '@/components/header/MobileHeader.vue';
     margin-bottom: 10px;
     width: 100%;
 }
-
+.about-dev {
+    gap: 15px;
+}
 .about-dev__content {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 15px;
 }
 
 .about-dev__logo {

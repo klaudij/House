@@ -59,7 +59,7 @@ const isActive = (path) => {
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    gap: 32px;
+    gap: 60px;
     padding: 16px;
 /* Fix the menu at the bottom of the viewport */
     position: fixed;

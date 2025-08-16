@@ -128,7 +128,7 @@ async function confirmDelete(id) {
 
       <!-- Recommendation section -->
       <div class="container house-detail__recommendation">
-        <h3>Recommended for you</h3>
+        <h2>Recommended for you</h2>
         <HouseCard
           class="compact-style"
           v-for="recommended in HouseStore.houses.slice(0, 3)"
@@ -152,6 +152,7 @@ async function confirmDelete(id) {
 /* Container*/
 .container {
   padding: 22px;
+  gap: 15px;
 }
 
 .house-detail__image {
@@ -198,6 +199,9 @@ async function confirmDelete(id) {
   align-items: center;
   justify-content: space-between;
 }
+.house-detail__street {
+    font-size: var(--fs-h1-mobile);
+  }
 
 .house-detail-row .ActionBtns {
   display: none;
@@ -322,7 +326,7 @@ async function confirmDelete(id) {
     padding: 0;
   }
 
-  .house-detail__recommendation h3 {
+  .house-detail__recommendation h2 {
     font-size: var(--fs-body-desktop);
   }
 

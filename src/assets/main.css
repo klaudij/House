@@ -115,9 +115,12 @@ form label {
     color: var(--color-text-secondary);
     font-size: var(--fs-input-label-mobile);
     font-weight:var(--weight-semibold) ;
+    margin-bottom: 5px;
 }
 
-form input, form select, form textarea {
+form input,
+form select,
+form textarea {
     border: none;
     padding: 14px;
     border-radius: var(--border-radius-regular);

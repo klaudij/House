@@ -41,7 +41,7 @@ defineProps({
 }
 
 .header-content {
-    padding: 40px 0 25px 0;
+    padding: 40px 0 15px 0;
 }
 
 .page-header__back-label {

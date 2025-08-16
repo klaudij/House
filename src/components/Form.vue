@@ -490,15 +490,14 @@ form {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin: 20px 0 90px 0;
+  margin: 10px 0 90px 0;
   width: 100%;
   max-width: 450px;
 }
 
 .form-row {
   display: flex;
-  flex-wrap: row;
-  gap: 10px;
+  gap: 15px;
 }
 
 .form-row input {
@@ -586,6 +585,7 @@ form button {
   text-transform: uppercase;
   border-radius: var(--border-radius-regular);
   padding: 12px;
+  margin-top: 10px;
 }
 
 .disabled-button {

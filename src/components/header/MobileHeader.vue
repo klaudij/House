@@ -58,7 +58,7 @@ defineProps({
 <style scoped>
 /* Container for the mobile header */
 .page-header {
-    margin-top: 30px;
+    margin-top: 34px;
     width: 100%;
 
     display: flex;

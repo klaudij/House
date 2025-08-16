@@ -95,6 +95,7 @@ function closePopUp() {
     align-items: center;
     gap: 12px;
     width: 100%;
+    margin-top: 5px;
 }
 .popup__button {
     background-color: var(--color-secondary);
