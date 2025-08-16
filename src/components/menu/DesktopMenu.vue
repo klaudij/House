@@ -65,6 +65,7 @@ const isActive = (path) => {
     gap: 50px;
     width: 100%;
     max-width: var(--width-max);
+    padding: 0 20px;
 }
 
 .menu-logo {

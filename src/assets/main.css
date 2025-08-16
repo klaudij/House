@@ -175,7 +175,6 @@ input[type="search"], form input, form select, form textarea {
     }
     .container {
     gap: 20px;
-    padding: 0;
     }
     .center {
     display: flex;

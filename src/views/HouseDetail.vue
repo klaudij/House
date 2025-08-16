@@ -68,7 +68,7 @@ async function confirmDelete(id) {
 <template>
   <div class="center">
     <!-- Header for desktop -->
-    <DesktopHeader title="Back to overview" />
+    <DesktopHeader class="dekstopheader" title="Back to overview" />
 
     <div class="house-details" v-if="house">
       <!-- House details -->
@@ -281,10 +281,11 @@ async function confirmDelete(id) {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 0px;
+    gap: 20px;
     width: 100%;
     max-width: var(--width-max);
     margin-bottom: 50px;
+    padding: 0 20px;
   }
 
   .house-detail-row {
@@ -327,6 +328,10 @@ async function confirmDelete(id) {
 
   .house-detail__recommendation .card p {
     font-size: 14px;
+  }
+
+  .dekstopheader {
+    padding: 0 20px;
   }
 }
 </style>

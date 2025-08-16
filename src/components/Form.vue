@@ -123,7 +123,7 @@ const isFormValid = computed(() => {
 })
 
 // HOLDS TO SEE IF NEEDS TO USE FORM FOR CREATING NEW LIST OR EDIT LIST
-const isEditing = computed(() => props.houseId !== undefined && props.houseId !== null && props.houseId !== '')
+const isEditing = computed(() => !!props.houseId)
 
 async function handleSubmit(e) {
   e.preventDefault()
