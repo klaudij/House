@@ -20,7 +20,6 @@ export const useHouseStore = defineStore('houses', () => {
     const data = await response.json()
 
     houses.value = data
-    // console.log(houses.value)
   }
 
   // FOR DELETING HOUSE
@@ -82,6 +81,25 @@ export const useHouseStore = defineStore('houses', () => {
     }
   }
 
+  // FOR FETCHING HOUSE ID //
+  async function fetchHouseById(id) {
+    try {
+      const fetchHouseById = await fetch(`${API_URL}/${id}`, {
+        method: 'GET',
+        headers: {
+          'X-Api-Key': API_KEY,
+
+        }
+      })
+      const data = await fetchHouseById.json()
+      return data.length > 0 ? data[0] : null
+
+    } catch (error) {
+      console.error(error)
+    }
+    
+  }
+
   // FOR EDITING EXCISTING LIST //
   async function updateListing(id, houseData) {
     try {
@@ -104,6 +122,7 @@ export const useHouseStore = defineStore('houses', () => {
     fetchHouses,
     deleteHouse,
     createListing,
+    fetchHouseById,
     updateListing
   }
 })

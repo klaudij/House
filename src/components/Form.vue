@@ -232,17 +232,9 @@ function removeImage() {
 ///////////////////////////////////
 onMounted(async () => {
   if (props.houseId) {
-    try {
-      const response = await fetch(`https://api.intern.d-tt.nl/api/houses/${props.houseId}`, {
-        headers: {
-          'X-Api-Key': 'ErSOqjsmKLVAQDRydFI7aUn8NTx2Z-5i'
-        }
-      })
-      const data = await response.json()
+      const house = await houseStore.fetchHouseById(props.houseId)
 
-      if (response.ok && data.length > 0) {
-        const house = data[0]
-
+      if (house) {
         streetName.value = house.location?.street || ''
         houseNumber.value = house.location?.houseNumber || ''
         postalCode.value = house.location?.zip || ''
@@ -255,12 +247,7 @@ onMounted(async () => {
         construction.value = house.constructionYear || ''
         description.value = house.description || ''
         previewUrl.value = house.image || ''
-      } else {
-        console.error('Failed to load house data')
       }
-    } catch (error) {
-      console.error(error)
-    }
   }
 })
 </script>
