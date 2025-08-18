@@ -5,6 +5,7 @@
 import { onMounted, ref, computed } from 'vue';
 import { useHouseStore } from '@/stores/houses.js'
 import { useRoute, useRouter } from 'vue-router'
+import { formatPrice } from '@/utils/currencyFormat'
 
 // Importing UI components 
 import PreviousPageBtn from '@/components/PreviousPageBtn.vue';
@@ -29,10 +30,8 @@ const house = computed(() =>
 /////////////////////////////////////
 // Load data when component mounts //
 //////////////////////////////////////
-onMounted(() => {
-  if (HouseStore.houses.length === 0) {
-    HouseStore.fetchHouses();
-  }
+onMounted(async () => {
+   await HouseStore.fetchHouses();
 });
 
 //////////////////////////////
@@ -108,7 +107,7 @@ async function confirmDelete(id) {
             </div>
 
             <div class="spec-row">
-              <p class="house-detail__spec house-detail__spec--price">{{ house.price }}</p>
+              <p class="house-detail__spec house-detail__spec--price">{{ formatPrice(house.price) }}</p>
               <p class="house-detail__spec house-detail__spec--size">{{ house.size }}m²</p>
               <p class="house-detail__spec house-detail__spec--construction">Built in {{ house.constructionYear }}</p>
             </div>
@@ -131,7 +130,7 @@ async function confirmDelete(id) {
         <h2>Recommended for you</h2>
         <HouseCard
           class="compact-style"
-          v-for="recommended in HouseStore.houses.slice(0, 3)"
+          v-for="recommended in HouseStore.houses.slice(0,3).filter(k => k.id !== houseId)"
           :key="recommended.id"
           :house="recommended"
           :showActions="false" />
@@ -210,7 +209,7 @@ async function confirmDelete(id) {
 .house-detail__specs {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
   max-width: 400px;
 }
@@ -252,10 +251,12 @@ async function confirmDelete(id) {
 
 .house-detail__spec--construction::before {
   background-image: url('../assets/icons/ic_construction_date@3x.png');
+  margin-top:5px;
 }
 
 .house-detail__spec--bedroom::before {
   background-image: url('../assets/icons/ic_bed@3x.png');
+  margin-top:5px;
 }
 
 .house-detail__spec--bathroom::before {

@@ -2,7 +2,7 @@
 /////////////////
 // ALl imports //
 ////////////////
-import { ref, computed, defineProps, onMounted, reactive, watch } from 'vue'
+import { ref, computed, defineProps, onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useHouseStore } from '@/stores/houses.js'
 
@@ -19,22 +19,24 @@ const props = defineProps({
 
 const router = useRouter()
 
-///////////////
-// Form data //
-///////////////
-const streetName = ref('')
-const houseNumber = ref('')
-const addition = ref('')
-const postalCode = ref('')
-const city = ref('')
-const price = ref('')
-const size = ref('')
-const garage = ref('')
-const bedrooms = ref('')
-const bathroom = ref('')
-const construction = ref('')
-const description = ref('')
-const image = ref(null)
+////////////////
+// Form state //
+////////////////
+const form = reactive ({
+ streetName: '',
+ houseNumber: '',
+ addition: '',
+ postalCode: '',
+ city: '',
+ price: '',
+ size: '',
+ garage: '',
+ bedrooms: '',
+ bathroom: '',
+ construction: '',
+ description: '',
+ image: null,
+})
 
 //////////////////////////
 // FOR THE ERROR STATES //
@@ -52,74 +54,43 @@ const errors = reactive({
   construction: false,
   description: false,
   image: false,
-
 })
+
 // CHECKS TO SEE IF FIELDS ARE EMPTY
 function validateField(field) {
-  if (field === 'streetName') {
-    errors.streetName = streetName.value.trim() === ''
+  const textFields = ['streetName', 'houseNumber', 'postalCode', 'city', 'description']
+  const otherFields = ['price', 'size', 'garage', 'bedrooms', 'bathroom', 'construction', 'image']
+
+  if (textFields.includes(field)) {
+    errors[field] = form[field].trim() === ''
+    return
   }
 
-  if (field === 'houseNumber') {
-    errors.houseNumber = houseNumber.value.trim() === ''
-  }
-
-  if (field === 'postalCode') {
-    errors.postalCode = postalCode.value.trim() === ''
-  }
-
-  if (field === 'city') {
-    errors.city = city.value.trim() === ''
-  }
-
-  if (field === 'price') {
-    errors.price = price.value === ''
-  }
-
-  if (field === 'size') {
-    errors.size = size.value === ''
-  }
-
-  if (field === 'garage') {
-    errors.garage = garage.value === ''
-  }
-
-  if (field === 'bedrooms') {
-    errors.bedrooms = bedrooms.value === ''
-  }
-
-  if (field === 'bathroom') {
-    errors.bathroom = bathroom.value === ''
-  }
-
-  if (field === 'construction') {
-    errors.construction = construction.value === ''
-  }
-
-  if (field === 'description') {
-    errors.description = description.value.trim() === ''
-  }
-
-  if (field === 'image') {
-    errors.image = image.value === null || image.value === ''
+  if (otherFields.includes(field)) {
+    if (field === 'image') {
+      errors[field] = form[field] === null || form[field] === ''
+    } else {
+      errors[field] = form[field] === ''
+    }
   }
 }
+
 // FOR FORM BUTTON - turns active if all fields al filled in
 const isFormValid = computed(() => {
   return (
-    streetName.value &&
-    houseNumber.value &&
-    postalCode.value &&
-    city.value &&
-    price.value &&
-    size.value &&
-    garage.value &&
-    bedrooms.value &&
-    bathroom.value &&
-    construction.value &&
-    description.value &&
-    image.value
-  )
+    form.streetName &&
+    form.houseNumber &&
+    form.postalCode &&
+    form.city &&
+    form.price &&
+    form.size &&
+    form.garage &&
+    form.bedrooms &&
+    form.bathroom &&
+    form.construction &&
+    form.description &&
+    form.image
+)
 })
 
 // HOLDS TO SEE IF NEEDS TO USE FORM FOR CREATING NEW LIST OR EDIT LIST
@@ -127,7 +98,7 @@ const isEditing = computed(() => !!props.houseId)
 
 async function handleSubmit(e) {
   e.preventDefault()
-  if (!image.value && !isEditing.value) {
+  if (!form.image && !isEditing.value) {
     errors.value = true
     return
   }
@@ -139,29 +110,38 @@ async function handleSubmit(e) {
   }
 }
 
+// Function to hold data for form fields. 
+function buildHouseFormData() {
+  // Create a new FormData object to hold form fields
+    const HouseData = new FormData()
+  // Append all the form values to the FormData object
+  HouseData.append('streetName', form.streetName)
+  HouseData.append('houseNumber', form.houseNumber)
+  HouseData.append('numberAddition', form.addition)
+  HouseData.append('zip', form.postalCode)
+  HouseData.append('city', form.city)
+  HouseData.append('price', form.price)
+  HouseData.append('size', form.size)
+  HouseData.append('hasGarage', form.garage === 'yes')
+  HouseData.append('bedrooms', form.bedrooms)
+  HouseData.append('bathrooms', form.bathroom)
+  HouseData.append('constructionYear', form.construction)
+  HouseData.append('description', form.description)
+  if (form.image) {
+    HouseData.append('image', form.image)
+  }
+
+  return HouseData
+}
+
 ////////////////////////////
 // FOR CREATING NEW LIST //
 ///////////////////////////
 async function createListing() {
-  // Create a new FormData object to hold form fields
-  const HouseData = new FormData()
-  // Append all the form values to the FormData object
-  HouseData.append('streetName', streetName.value)
-  HouseData.append('houseNumber', houseNumber.value)
-  HouseData.append('numberAddition', addition.value)
-  HouseData.append('zip', postalCode.value)
-  HouseData.append('city', city.value)
-  HouseData.append('price', price.value)
-  HouseData.append('size', size.value)
-  HouseData.append('hasGarage', garage.value === 'yes')
-  HouseData.append('bedrooms', bedrooms.value)
-  HouseData.append('bathrooms', bathroom.value)
-  HouseData.append('constructionYear', construction.value)
-  HouseData.append('description', description.value)
-
   try {
+    const houseFormData = buildHouseFormData()
     // using createListing() from houses.js to create new listing
-    const created = await houseStore.createListing(HouseData, image.value)
+    const created = await houseStore.createListing(houseFormData, form.image)
     // Navigate to new listing page if succesful
     router.push(`/house/${created.id}`)
   } catch (error) {
@@ -173,25 +153,10 @@ async function createListing() {
 // FOR EDITING EXCISTING LIST //
 ///////////////////////////////
 async function updateListing() {
-  // Create a new FormData object to hold form fields
-  const houseData = new FormData()
-  // Append all the form values to the FormData object
-  houseData.append('streetName', streetName.value)
-  houseData.append('houseNumber', houseNumber.value)
-  houseData.append('numberAddition', addition.value)
-  houseData.append('zip', postalCode.value)
-  houseData.append('city', city.value)
-  houseData.append('price', price.value)
-  houseData.append('size', size.value)
-  houseData.append('hasGarage', garage.value === 'yes')
-  houseData.append('bedrooms', bedrooms.value)
-  houseData.append('bathrooms', bathroom.value)
-  houseData.append('constructionYear', construction.value)
-  houseData.append('description', description.value)
-
   try {
+     const houseFormData = buildHouseFormData()
     // using updateListing() from houses.js to update listing
-    await houseStore.updateListing(props.houseId, houseData)
+    await houseStore.updateListing(props.houseId, houseFormData, form.image)
     // Navigate to new listing page if succesful
     router.push(`/house/${props.houseId}`)
   } catch (error) {
@@ -213,17 +178,18 @@ function handleImageUpload(event) {
   if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
     // Create a preview URL to see preview img
     previewUrl.value = URL.createObjectURL(file)
-    image.value = file   // stores the image
+    form.image = file   // stores the image
     validateField('image')
   } else {
     previewUrl.value = null
-    image.value = null   // reset
+    form.image = null   // reset
   }
 }
 // REMOVE IMG FUNCION
 function removeImage() {
   // Remove the preview from form
   previewUrl.value = null
+  form.image = null // reset
   document.getElementById('picture').value = '' // clear file input
 }
 
@@ -235,18 +201,19 @@ onMounted(async () => {
       const house = await houseStore.fetchHouseById(props.houseId)
 
       if (house) {
-        streetName.value = house.location?.street || ''
-        houseNumber.value = house.location?.houseNumber || ''
-        postalCode.value = house.location?.zip || ''
-        city.value = house.location?.city || ''
-        price.value = house.price || ''
-        size.value = house.size || ''
-        garage.value = house.hasGarage ? 'yes' : 'no'
-        bedrooms.value = house.rooms?.bedrooms || ''
-        bathroom.value = house.rooms?.bathrooms || ''
-        construction.value = house.constructionYear || ''
-        description.value = house.description || ''
-        previewUrl.value = house.image || ''
+        form.streetName = house.location?.street || ''
+        form.houseNumber = house.location?.houseNumber || ''
+        form.postalCode = house.location?.zip || ''
+        form.city = house.location?.city || ''
+        form.price = house.price || ''
+        form.size = house.size || ''
+        form.garage = house.hasGarage ? 'yes' : 'no'
+        form.bedrooms = house.rooms?.bedrooms || ''
+        form.bathroom = house.rooms?.bathrooms || ''
+        form.construction = house.constructionYear || ''
+        form.description = house.description || ''
+        form.image = house.image
+        previewUrl.value = house.image || null
       }
   }
 })
@@ -260,7 +227,7 @@ onMounted(async () => {
       <input
         id="streetName"
         type="text"
-        v-model="streetName"
+        v-model="form.streetName"
         placeholder="Enter the street name"
         required
         @blur="validateField('streetName')"
@@ -275,7 +242,7 @@ onMounted(async () => {
         <input
           id="houseNumber"
           type="text"
-          v-model="houseNumber"
+          v-model="form.houseNumber"
           placeholder="Enter the house number"
           @blur="validateField('houseNumber')"
           :class="{ 'error-border': errors.houseNumber }"
@@ -286,7 +253,7 @@ onMounted(async () => {
 
       <div class="form-group">
         <label for="addition">Addition (optional)</label>
-        <input id="addition" type="text" v-model="addition" placeholder="e.g. A">
+        <input id="addition" type="text" v-model="form.addition" placeholder="e.g. A">
       </div>
     </div>
 
@@ -295,7 +262,7 @@ onMounted(async () => {
       <input
         id="postalCode"
         type="text"
-        v-model="postalCode"
+        v-model="form.postalCode"
         placeholder="e.g. 1000 AA" required
         @blur="validateField('postalCode')"
         :class="{ 'error-border': errors.postalCode }"
@@ -308,7 +275,7 @@ onMounted(async () => {
       <input
         id="city"
         type="text"
-        v-model="city"
+        v-model="form.city"
         placeholder="e.g. Utrecht" required
         @blur="validateField('city')"
         :class="{ 'error-border': errors.city }"
@@ -366,7 +333,7 @@ onMounted(async () => {
       <input
         id="price"
         type="number"
-        v-model="price"
+        v-model="form.price"
         placeholder="e.g. €150.000" required
         @blur="validateField('price')"
         :class="{ 'error-border': errors.price }"
@@ -381,7 +348,7 @@ onMounted(async () => {
         <input
           id="size"
           type="number" 
-          v-model="size" 
+          v-model="form.size" 
           placeholder="60m²" 
           required @blur="validateField('size')"
           :class="{ 'error-border': errors.size }"
@@ -392,7 +359,7 @@ onMounted(async () => {
       <div class="form-group custom-select">
         <label for="garage">Garage*</label>
         <select 
-          v-model="garage"
+          v-model="form.garage"
           id="garage" required
           @blur="validateField('garage')"
           :class="{ 'error-border': errors.garage }"
@@ -411,7 +378,7 @@ onMounted(async () => {
         <input
           id="bedrooms"
           type="number" 
-          v-model="bedrooms" 
+          v-model="form.bedrooms" 
           placeholder="Enter amount" 
           required
           @blur="validateField('bedrooms')" 
@@ -425,7 +392,7 @@ onMounted(async () => {
         <input 
           id="bathroom" 
           type="number"
-          v-model="bathroom"
+          v-model="form.bathroom"
           placeholder="Enter amount" 
           required
           @blur="validateField('bathroom')"
@@ -440,7 +407,7 @@ onMounted(async () => {
       <input
         id="construction" 
         type="number"
-        v-model="construction"
+        v-model="form.construction"
         placeholder="e.g. 1990" required
         @blur="validateField('construction')"
         :class="{ 'error-border': errors.construction }"
@@ -452,7 +419,7 @@ onMounted(async () => {
       <label for="description">Description*</label>
       <textarea
         id="description" 
-        v-model="description" 
+        v-model="form.description" 
         placeholder="Enter description" required
         @blur="validateField('description')" 
         :class="{ 'error-border': errors.description }"
@@ -464,8 +431,8 @@ onMounted(async () => {
     <!-- FORM BUTTON -->
     <button 
       type="submit" 
-      :disabled="!isEditing && !isFormValid"
-      :class="{ 'disabled-button': !isEditing && !isFormValid }"
+      :disabled="!isFormValid"
+      :class="{ 'disabled-button': !isFormValid }"
     >
        {{ isEditing ? 'Save' : 'Post' }}
     </button>

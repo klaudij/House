@@ -4,6 +4,7 @@
 ////////////////
 import { defineProps } from 'vue';
 import { useRouter } from 'vue-router'
+import { formatPrice } from '@/utils/currencyFormat'
 
 // Importing UI components used
 import ActionBtns from './ActionBtns.vue';
@@ -35,13 +36,13 @@ function goToDetail(houseId) {
             <div class="card__details">
                 <div class="card__text">
                     <h2 class="card__streetname">{{ house.location.street }} {{ house.location.houseNumber }}</h2>
-                    <p class="card__price">€ {{ house.price }}</p>
+                    <p class="card__price">€ {{ formatPrice(house.price) }}</p>
                     <p class="card__location">{{ house.location.zip }} {{ house.location.city }}</p>
                 </div>
                 <div class="card__specs">
                     <p class="card__spec card__spec--bedroom">{{ house.rooms.bedrooms }}</p>
                     <p class="card__spec card__spec--bathroom">{{ house.rooms.bathrooms }}</p>
-                    <p class="card__spec card__spec--size">{{ house.size }}m²</p>
+                    <p class="card__spec card__spec--size">{{ house.size }} m²</p>
                 </div>
             </div>
         </div>

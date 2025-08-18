@@ -69,6 +69,7 @@ export const useHouseStore = defineStore('houses', () => {
         })
 
         if (imageUploadResponse.ok) {
+          houses.value.push(data)
           return data
         } else {
           console.error('Image upload failes')
@@ -84,14 +85,14 @@ export const useHouseStore = defineStore('houses', () => {
   // FOR FETCHING HOUSE ID //
   async function fetchHouseById(id) {
     try {
-      const fetchHouseById = await fetch(`${API_URL}/${id}`, {
+      const response = await fetch(`${API_URL}/${id}`, {
         method: 'GET',
         headers: {
           'X-Api-Key': API_KEY,
 
         }
       })
-      const data = await fetchHouseById.json()
+      const data = await response.json()
       return data.length > 0 ? data[0] : null
 
     } catch (error) {
@@ -101,21 +102,30 @@ export const useHouseStore = defineStore('houses', () => {
   }
 
   // FOR EDITING EXCISTING LIST //
-  async function updateListing(id, houseData) {
-    try {
-      const response = await fetch(`${API_URL}/${id}`, {
+  async function updateListing(id, houseData, imageFile) {
+  try {
+    // update house fields
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: 'POST',
+      headers: { 'X-Api-Key': API_KEY },
+      body: houseData
+    })
+
+    if (response.ok || imageFile) {
+      const imageUpload = new FormData()
+      imageUpload.append('image', imageFile)
+
+      await fetch(`${API_URL}/${id}/upload`, {
         method: 'POST',
-        headers: {
-          'X-Api-Key': API_KEY,
-
-        },
-        body: houseData
+        headers: { 'X-Api-Key': API_KEY },
+        body: imageUpload
       })
-
-    } catch (error) {
-      console.error(error)
     }
+
+  } catch (error) {
+    console.error(error)
   }
+}
 
   return {
     houses,
