@@ -6,7 +6,6 @@ import { defineProps } from 'vue';
 // Custom back button component. This handles navigation to the previous page
 import PreviousPageBtn from '../PreviousPageBtn.vue'
 
-
 /**
  * Define props that this component accepts, with types and whether they are required.
  * - title: The page header title .
@@ -30,7 +29,6 @@ defineProps({
     },
 })
 </script>
-
 
 <template>
     <div class="page-header center mobile-only">

@@ -8,5 +8,3 @@ export function formatPrice(value) {
         });
         return formatter.format(value);
     }
-
-    

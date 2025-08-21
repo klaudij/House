@@ -24,6 +24,5 @@ defineProps({
 @media (min-width: 1024px) {
  .error-text {
     font-size: var(--fs-error-desktop);
-}   
-}
+}}
 </style>

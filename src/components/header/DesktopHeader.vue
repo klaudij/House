@@ -29,7 +29,6 @@ defineProps({
 
         </div>
 
-
     </div>
 </template>
 
